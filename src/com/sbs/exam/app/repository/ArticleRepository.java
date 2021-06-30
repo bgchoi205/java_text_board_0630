@@ -17,16 +17,14 @@ public class ArticleRepository {
 		lastId = 0;
 	}
 
-	public int write(String title, String body) {
-		Rq rq = new Rq();
+	public int write(int boardId, int memberId, String title, String body) {
 		
 		int id = lastId + 1;
 		String regDate = Util.getNowDateStr();
 		String updateDate = regDate;
-		Member member = rq.getLoginedMember();
-		int memberId = member.getId();
+		
 
-		Article article = new Article(id, regDate, updateDate, 1, memberId, title, body);
+		Article article = new Article(id, regDate, updateDate, boardId, memberId, title, body);
 		articles.add(article);
 
 		lastId = id;

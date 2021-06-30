@@ -7,17 +7,21 @@ import com.sbs.exam.app.Rq;
 import com.sbs.exam.app.container.Container;
 import com.sbs.exam.app.dto.Article;
 import com.sbs.exam.app.dto.Board;
+import com.sbs.exam.app.dto.Member;
 import com.sbs.exam.app.service.ArticleService;
 import com.sbs.exam.app.service.BoardService;
+import com.sbs.exam.app.service.MemberService;
 import com.sbs.exam.util.Util;
 
 public class UsrArticleController extends Controller {
 	private BoardService boardService;
+	private MemberService memberService;
 	private ArticleService articleService;
 	private Scanner sc;
 
 	public UsrArticleController() {
 		boardService = Container.getBoardService();
+		memberService = Container.getMemberService();
 		articleService = Container.getArticleService();
 		sc = Container.getSc();
 
@@ -112,11 +116,13 @@ public class UsrArticleController extends Controller {
 	private void actionList(Rq rq) {
 		List<Article> articles = articleService.getArticles();
 
-		System.out.printf("번호 / 작성날자 / 제목\n");
+		System.out.printf("번호 / 게시판 / 작성자 / 작성날짜 / 제목\n");
 
 		for (int i = articles.size() - 1; i >= 0; i--) {
 			Article article = articles.get(i);
-			System.out.printf("%d / %s / %s\n", article.getId(), article.getRegDate(), article.getTitle());
+			String boardName = boardService.getBoardById(article.getBoardId()).getName();
+			String writer = memberService.getMemberById(article.getMemberId()).getNickname();
+			System.out.printf("%d / %s / %s / %s / %s\n", article.getId(), boardName, writer, article.getRegDate(), article.getTitle());
 		}
 	}
 
@@ -133,12 +139,20 @@ public class UsrArticleController extends Controller {
 			return;
 		}
 		
+		int memberId = rq.getLoginedMember().getId();
+		
 		System.out.printf("제목 : ");
 		String title = sc.nextLine().trim();
 		System.out.printf("내용 : ");
 		String body = sc.nextLine().trim();
 
-		int id = articleService.write(title, body);
+		int id = articleService.write(boardId, memberId, title, body);
+		
+		Article article = articleService.getArticleById(id);
+		
+		System.out.println("id:" + article.getId() + " regDate:" + article.getRegDate() + 
+				" updateDate:" + article.getUpdateDate() + " boardId:" + article.getBoardId() + " memberId:" + article.getMemberId() + 
+				" title:" + article.getTitle() + " body:" + article.getBody());
 
 		System.out.printf("%d번 게시물이 생성되었습니다.\n", id);
 	}
