@@ -114,7 +114,17 @@ public class UsrArticleController extends Controller {
 	}
 
 	private void actionList(Rq rq) {
+		int boardId = rq.getIntParam("boardId", 0);
+		
 		List<Article> articles = articleService.getArticles();
+		
+		if(boardId != 0) {
+			if(boardService.getBoardById(boardId) == null) {
+				System.out.println("없는 게시판 번호입니다.");
+				return;
+			}
+			articles = articleService.getFilteredArticles(boardId);
+		}
 
 		System.out.printf("번호 / 게시판 / 작성자 / 작성날짜 / 제목\n");
 

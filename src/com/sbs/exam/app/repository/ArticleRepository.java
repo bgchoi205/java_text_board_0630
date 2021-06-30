@@ -54,4 +54,16 @@ public class ArticleRepository {
 		return articles;
 	}
 
+	public List<Article> getFilteredArticles(int boardId) {
+
+		
+		List<Article> getFilteredArticles = new ArrayList<>();
+		for(Article article : articles) {
+			if(article.getBoardId() == boardId) {
+				getFilteredArticles.add(article);
+			}
+		}
+		return getFilteredArticles;
+	}
+
 }

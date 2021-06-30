@@ -1,5 +1,6 @@
 package com.sbs.exam.app.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.sbs.exam.app.container.Container;
@@ -35,5 +36,9 @@ public class ArticleService {
 			String body = "내용 " + (i + 1);
 			write(i % 2 + 1, i % 2 + 1,title, body);
 		}
+	}
+
+	public List<Article> getFilteredArticles(int boardId) {
+		return articleRepository.getFilteredArticles(boardId);
 	}
 }
