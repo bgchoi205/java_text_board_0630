@@ -1,10 +1,12 @@
 package com.sbs.exam.app.controller;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 
 import com.sbs.exam.app.Rq;
+import com.sbs.exam.app.comparator.Asc;
 import com.sbs.exam.app.container.Container;
 import com.sbs.exam.app.dto.Article;
 import com.sbs.exam.app.dto.Board;
@@ -106,18 +108,28 @@ public class UsrArticleController extends Controller {
 			System.out.printf("%d번 게시물은 존재하지 않습니다.\n", id);
 			return;
 		}
+		
+		String boardName = boardService.getBoardById(article.getBoardId()).getName();
+		String writer = memberService.getMemberById(article.getMemberId()).getNickname();
 
 		System.out.printf("번호 : %d\n", article.getId());
 		System.out.printf("작성날짜 : %s\n", article.getRegDate());
 		System.out.printf("수정날짜 : %s\n", article.getUpdateDate());
+		System.out.printf("게시판명 : %s\n", boardName);
+		System.out.printf("작성자 : %s\n", writer);
 		System.out.printf("제목 : %s\n", article.getTitle());
 		System.out.printf("내용 : %s\n", article.getBody());
+		System.out.printf("조회수 : %d\n", article.getHitCount());
+		article.setHitCount(article.getHitCount() + 1);
 	}
 
 	private void actionList(Rq rq) {
 		int boardId = rq.getIntParam("boardId", 0);
 		String searchKeyword = rq.getStrParam("searchKeyword", "");
 		String searchKeywordTypeCode = rq.getStrParam("searchKeywordTypeCode", "");
+		String orderByColumn = rq.getStrParam("orderByColumn", "");
+		String orderAscTypeCode = rq.getStrParam("orderAscTypeCode", "");
+		int page = rq.getIntParam("page", 1);
 		
 		List<Article> articles =new ArrayList<>();
 		if(boardId == 0) {
@@ -129,15 +141,30 @@ public class UsrArticleController extends Controller {
 			}
 		}
 		
-		articles = articleService.getFilteredArticles(boardId, searchKeyword, searchKeywordTypeCode);
+		articles = articleService.getFilteredArticles(boardId, searchKeyword, searchKeywordTypeCode, orderByColumn, orderAscTypeCode);
+		
+		
+		if(orderAscTypeCode.equals("desc")) {
+			Collections.sort(articles, new Asc(orderByColumn));
+		}else if(orderAscTypeCode.equals("asc")) {
+			Collections.sort(articles, new Asc(orderByColumn).reversed());
+		}
+		
+		int pageCount = 10;
+		int startIndex = articles.size() - 1 - ((page - 1) * pageCount);
+		int endIndex = startIndex - pageCount + 1;
+		if(endIndex < 0) {
+			endIndex = 0;
+		}
+		
+		System.out.println("해당 게시물 수:" + articles.size());
+		System.out.printf("번호 / 게시판 / 작성자 / 작성날짜 / 제목 / 조회\n");
 
-		System.out.printf("번호 / 게시판 / 작성자 / 작성날짜 / 제목\n");
-
-		for (int i = articles.size() - 1; i >= 0; i--) {
+		for (int i = startIndex; i >= endIndex; i--) {
 			Article article = articles.get(i);
 			String boardName = boardService.getBoardById(article.getBoardId()).getName();
 			String writer = memberService.getMemberById(article.getMemberId()).getNickname();
-			System.out.printf("%d / %s / %s / %s / %s\n", article.getId(), boardName, writer, article.getRegDate(), article.getTitle());
+			System.out.printf("%d / %s / %s / %s / %s / %d \n", article.getId(), boardName, writer, article.getRegDate(), article.getTitle(), article.getHitCount());
 		}
 	}
 
@@ -161,7 +188,7 @@ public class UsrArticleController extends Controller {
 		System.out.printf("내용 : ");
 		String body = sc.nextLine().trim();
 
-		int id = articleService.write(boardId, memberId, title, body);
+		int id = articleService.write(boardId, memberId, title, body, 0);
 		
 		Article article = articleService.getArticleById(id);
 		

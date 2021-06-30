@@ -17,14 +17,14 @@ public class ArticleRepository {
 		lastId = 0;
 	}
 
-	public int write(int boardId, int memberId, String title, String body) {
+	public int write(int boardId, int memberId, String title, String body, int hitCount) {
 		
 		int id = lastId + 1;
 		String regDate = Util.getNowDateStr();
 		String updateDate = regDate;
 		
 
-		Article article = new Article(id, regDate, updateDate, boardId, memberId, title, body);
+		Article article = new Article(id, regDate, updateDate, boardId, memberId, title, body, hitCount);
 		articles.add(article);
 
 		lastId = id;
@@ -54,14 +54,13 @@ public class ArticleRepository {
 		return articles;
 	}
 
-	public List<Article> getFilteredArticles(int boardId, String searchKeyword, String searchKeywordTypeCode) {
-		List<Article> FilteredArticles = getFiltered1Articles(boardId, searchKeyword, searchKeywordTypeCode);
-		
+	public List<Article> getFilteredArticles(int boardId, String searchKeyword, String searchKeywordTypeCode, String orderByColumn, String orderAscTypeCode) {
+		List<Article> FilteredArticles = getFiltered1Articles(boardId, searchKeyword, searchKeywordTypeCode, orderByColumn, orderAscTypeCode);
 		
 		return FilteredArticles;
 	}
 
-	private List<Article> getFiltered1Articles(int boardId, String searchKeyword, String searchKeywordTypeCode) {
+	private List<Article> getFiltered1Articles(int boardId, String searchKeyword, String searchKeywordTypeCode, String orderByColumn, String orderAscTypeCode) {
 		List<Article> Filtered1Articles = new ArrayList<>();
 		if(boardId == 0) {
 			Filtered1Articles =  articles;
@@ -72,12 +71,12 @@ public class ArticleRepository {
 				}
 			}
 		}
-		Filtered1Articles = getFiltered2Articles(Filtered1Articles, searchKeyword, searchKeywordTypeCode);
+		Filtered1Articles = getFiltered2Articles(Filtered1Articles, searchKeyword, searchKeywordTypeCode, orderByColumn, orderAscTypeCode);
 		
 		return Filtered1Articles;
 	}
 
-	private List<Article> getFiltered2Articles(List<Article> filtered1Articles, String searchKeyword, String searchKeywordTypeCode) {
+	private List<Article> getFiltered2Articles(List<Article> filtered1Articles, String searchKeyword, String searchKeywordTypeCode, String orderByColumn, String orderAscTypeCode) {
 		List<Article> Filtered2Articles = new ArrayList<>();
 		if(searchKeyword.isEmpty()) {
 			Filtered2Articles =  filtered1Articles;
@@ -95,9 +94,11 @@ public class ArticleRepository {
 					}
 				}
 			}
-			
 		}
+//		Filtered2Articles = getFiltered3Articles(Filtered2Articles, orderByColumn, orderAscTypeCode);
+		
 		return Filtered2Articles;
 	}
+
 
 }

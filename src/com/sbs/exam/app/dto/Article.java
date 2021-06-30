@@ -15,4 +15,5 @@ public class Article extends Object {
 	private int memberId;
 	private String title;
 	private String body;
+	private int hitCount;
 }
