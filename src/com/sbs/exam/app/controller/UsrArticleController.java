@@ -17,8 +17,6 @@ public class UsrArticleController extends Controller {
 		articleService = Container.getArticleService();
 		sc = Container.getSc();
 
-		// 테스트 게시물 만들기
-		makeTestData();
 	}
 
 	private void makeTestData() {

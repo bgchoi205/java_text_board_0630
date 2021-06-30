@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.sbs.exam.app.Rq;
 import com.sbs.exam.app.dto.Article;
+import com.sbs.exam.app.dto.Member;
 import com.sbs.exam.util.Util;
 
 public class ArticleRepository {
@@ -22,7 +23,8 @@ public class ArticleRepository {
 		int id = lastId + 1;
 		String regDate = Util.getNowDateStr();
 		String updateDate = regDate;
-		int memberId = rq.getLoginedMember().getId();
+		Member member = rq.getLoginedMember();
+		int memberId = member.getId();
 
 		Article article = new Article(id, regDate, updateDate, 1, memberId, title, body);
 		articles.add(article);
