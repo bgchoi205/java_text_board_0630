@@ -158,13 +158,14 @@ public class UsrArticleController extends Controller {
 		}
 		
 		System.out.println("해당 게시물 수:" + articles.size());
-		System.out.printf("번호 / 게시판 / 작성자 / 작성날짜 / 제목 / 조회\n");
+		System.out.printf("번호 / 게시판 / 작성자 / 작성날짜 / 제목 / 조회 / 좋아요 / 싫어요\n");
 
 		for (int i = startIndex; i >= endIndex; i--) {
 			Article article = articles.get(i);
 			String boardName = boardService.getBoardById(article.getBoardId()).getName();
 			String writer = memberService.getMemberById(article.getMemberId()).getNickname();
-			System.out.printf("%d / %s / %s / %s / %s / %d \n", article.getId(), boardName, writer, article.getRegDate(), article.getTitle(), article.getHitCount());
+			System.out.printf("%d / %s / %s / %s / %s / %d / %d / %d \n", article.getId(), boardName, writer, article.getRegDate(), 
+					article.getTitle(), article.getHitCount(), article.getLikeCount(), article.getDislikeCount());
 		}
 	}
 
@@ -188,7 +189,7 @@ public class UsrArticleController extends Controller {
 		System.out.printf("내용 : ");
 		String body = sc.nextLine().trim();
 
-		int id = articleService.write(boardId, memberId, title, body, 0);
+		int id = articleService.write(boardId, memberId, title, body, 0, 0, 0);
 		
 		Article article = articleService.getArticleById(id);
 		

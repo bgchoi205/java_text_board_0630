@@ -13,7 +13,7 @@ public class MemberService {
 	}
 
 	public void makeTestData() {
-		for (int i = 0; i < 2; i++) {
+		for (int i = 0; i < 100; i++) {
 			String loginId = "user" + (i + 1);
 			String loginPw = loginId;
 			String name = "홍길동" + (i + 1);

@@ -16,4 +16,6 @@ public class Article extends Object {
 	private String title;
 	private String body;
 	private int hitCount;
+	private int likeCount;
+	private int dislikeCount;
 }

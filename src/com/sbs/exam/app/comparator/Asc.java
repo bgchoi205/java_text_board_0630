@@ -12,12 +12,7 @@ public class Asc implements Comparator<Article>{
 	public Asc(String getColumnType) {
 		columnType = getColumnType;
 	}
-	
-//	public void getColumnType(String ColumnType) {
-//		
-//		columnType = ColumnType;
-//	}
-	
+
 	
 	@Override
 	public int compare(Article a, Article b)
@@ -29,6 +24,10 @@ public class Asc implements Comparator<Article>{
 			return a.getTitle().compareTo(b.getTitle());
 		case  "hitCount" :
 			return Integer.compare(a.getHitCount(), b.getHitCount());
+		case  "likeCount" :
+			return Integer.compare(a.getLikeCount(), b.getLikeCount());
+		case  "dislikeCount" :
+			return Integer.compare(a.getDislikeCount(), b.getDislikeCount());
 		}
 		
 		return Integer.compare(a.getId(), b.getId());
