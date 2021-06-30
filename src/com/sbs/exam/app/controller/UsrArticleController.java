@@ -1,5 +1,6 @@
 package com.sbs.exam.app.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -115,16 +116,20 @@ public class UsrArticleController extends Controller {
 
 	private void actionList(Rq rq) {
 		int boardId = rq.getIntParam("boardId", 0);
+		String searchKeyword = rq.getStrParam("searchKeyword", "");
+		String searchKeywordTypeCode = rq.getStrParam("searchKeywordTypeCode", "");
 		
-		List<Article> articles = articleService.getArticles();
-		
-		if(boardId != 0) {
+		List<Article> articles =new ArrayList<>();
+		if(boardId == 0) {
+			articles = articleService.getArticles();
+		}else {
 			if(boardService.getBoardById(boardId) == null) {
-				System.out.println("없는 게시판 번호입니다.");
+				System.out.println("존재하지 않는 게시판 번호입니다.");
 				return;
 			}
-			articles = articleService.getFilteredArticles(boardId);
 		}
+		
+		articles = articleService.getFilteredArticles(boardId, searchKeyword, searchKeywordTypeCode);
 
 		System.out.printf("번호 / 게시판 / 작성자 / 작성날짜 / 제목\n");
 

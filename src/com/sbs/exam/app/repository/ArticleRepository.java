@@ -54,16 +54,50 @@ public class ArticleRepository {
 		return articles;
 	}
 
-	public List<Article> getFilteredArticles(int boardId) {
-
+	public List<Article> getFilteredArticles(int boardId, String searchKeyword, String searchKeywordTypeCode) {
+		List<Article> FilteredArticles = getFiltered1Articles(boardId, searchKeyword, searchKeywordTypeCode);
 		
-		List<Article> getFilteredArticles = new ArrayList<>();
-		for(Article article : articles) {
-			if(article.getBoardId() == boardId) {
-				getFilteredArticles.add(article);
+		
+		return FilteredArticles;
+	}
+
+	private List<Article> getFiltered1Articles(int boardId, String searchKeyword, String searchKeywordTypeCode) {
+		List<Article> Filtered1Articles = new ArrayList<>();
+		if(boardId == 0) {
+			Filtered1Articles =  articles;
+		} else {
+			for(Article article : articles) {
+				if(article.getBoardId() == boardId) {
+					Filtered1Articles.add(article);
+				}
 			}
 		}
-		return getFilteredArticles;
+		Filtered1Articles = getFiltered2Articles(Filtered1Articles, searchKeyword, searchKeywordTypeCode);
+		
+		return Filtered1Articles;
+	}
+
+	private List<Article> getFiltered2Articles(List<Article> filtered1Articles, String searchKeyword, String searchKeywordTypeCode) {
+		List<Article> Filtered2Articles = new ArrayList<>();
+		if(searchKeyword.isEmpty()) {
+			Filtered2Articles =  filtered1Articles;
+		}else {
+			if(searchKeywordTypeCode.equals("title")) {
+				for(Article article : filtered1Articles) {
+					if(article.getTitle().contains(searchKeyword)) {
+						Filtered2Articles.add(article);
+					}
+				}
+			} else if(searchKeywordTypeCode.equals("body")) {
+				for(Article article : filtered1Articles) {
+					if(article.getBody().contains(searchKeyword)) {
+						Filtered2Articles.add(article);
+					}
+				}
+			}
+			
+		}
+		return Filtered2Articles;
 	}
 
 }

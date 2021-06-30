@@ -38,7 +38,7 @@ public class ArticleService {
 		}
 	}
 
-	public List<Article> getFilteredArticles(int boardId) {
-		return articleRepository.getFilteredArticles(boardId);
+	public List<Article> getFilteredArticles(int boardId, String searchKeyword, String searchKeywordTypeCode) {
+		return articleRepository.getFilteredArticles(boardId, searchKeyword, searchKeywordTypeCode);
 	}
 }
