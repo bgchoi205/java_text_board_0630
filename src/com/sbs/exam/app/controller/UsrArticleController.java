@@ -6,14 +6,18 @@ import java.util.Scanner;
 import com.sbs.exam.app.Rq;
 import com.sbs.exam.app.container.Container;
 import com.sbs.exam.app.dto.Article;
+import com.sbs.exam.app.dto.Board;
 import com.sbs.exam.app.service.ArticleService;
+import com.sbs.exam.app.service.BoardService;
 import com.sbs.exam.util.Util;
 
 public class UsrArticleController extends Controller {
+	private BoardService boardService;
 	private ArticleService articleService;
 	private Scanner sc;
 
 	public UsrArticleController() {
+		boardService = Container.getBoardService();
 		articleService = Container.getArticleService();
 		sc = Container.getSc();
 
@@ -21,6 +25,7 @@ public class UsrArticleController extends Controller {
 
 	private void makeTestData() {
 		articleService.makeTestData();
+		boardService.makeTestData();
 	}
 
 	@Override
@@ -116,6 +121,18 @@ public class UsrArticleController extends Controller {
 	}
 
 	private void actionWrite(Rq rq) {
+		int boardId = rq.getIntParam("boardId", 0);
+		if(boardId == 0) {
+			System.out.println("게시판 번호를 입력해주세요.");
+			return;
+		}
+		Board board = boardService.getBoardById(boardId);
+		
+		if(board == null) {
+			System.out.println("존재하지 않는 게시판 번호입니다.");
+			return;
+		}
+		
 		System.out.printf("제목 : ");
 		String title = sc.nextLine().trim();
 		System.out.printf("내용 : ");

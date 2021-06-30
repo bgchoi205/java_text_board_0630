@@ -9,16 +9,19 @@ import com.sbs.exam.app.controller.Controller;
 import com.sbs.exam.app.dto.Member;
 import com.sbs.exam.app.interceptor.Interceptor;
 import com.sbs.exam.app.service.ArticleService;
+import com.sbs.exam.app.service.BoardService;
 import com.sbs.exam.app.service.MemberService;
 
 public class App {
 	Scanner sc;
 	MemberService memberService;
+	BoardService boardService;
 	ArticleService articleService;
 
 	App() {
 		sc = Container.getSc();
 		memberService = Container.getMemberService();
+		boardService = Container.getBoardService();
 		articleService = Container.getArticleService();
 	}
 
@@ -26,7 +29,9 @@ public class App {
 		System.out.println("== 텍스트 게시판 시작 ==");
 		
 		new Rq().login(memberService.getMemberById(1));
+		boardService.makeTestData();
 		articleService.makeTestData();
+		
 
 		while (true) {
 			String promprName = "명령어";

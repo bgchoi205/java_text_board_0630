@@ -8,8 +8,10 @@ import com.sbs.exam.app.controller.UsrMemberController;
 import com.sbs.exam.app.controller.UsrSystemController;
 import com.sbs.exam.app.interceptor.NeedLoginInterceptor;
 import com.sbs.exam.app.repository.ArticleRepository;
+import com.sbs.exam.app.repository.BoardRepository;
 import com.sbs.exam.app.repository.MemberRepository;
 import com.sbs.exam.app.service.ArticleService;
+import com.sbs.exam.app.service.BoardService;
 import com.sbs.exam.app.service.MemberService;
 
 import lombok.Getter;
@@ -23,10 +25,14 @@ public class Container {
 	@Getter
 	private static MemberRepository memberRepository;
 	@Getter
+	private static BoardRepository boardRepository;
+	@Getter
 	private static ArticleRepository articleRepository;
 
 	@Getter
 	private static MemberService memberService;
+	@Getter
+	private static BoardService boardService;
 	@Getter
 	private static ArticleService articleService;
 	
@@ -47,9 +53,11 @@ public class Container {
 		session = new Session();
 
 		memberRepository = new MemberRepository();
+		boardRepository = new BoardRepository();
 		articleRepository = new ArticleRepository();
 
 		memberService = new MemberService();
+		boardService = new BoardService();
 		articleService = new ArticleService();
 		
 		needLoginInterceptor = new NeedLoginInterceptor();
