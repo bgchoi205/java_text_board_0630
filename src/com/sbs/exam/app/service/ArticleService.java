@@ -38,8 +38,8 @@ public class ArticleService {
 			String title = "제목" + (i + 1);
 			String body = "내용" + (i + 1);
 			int hitCount = random.nextInt(100);
-			int likeCount = random.nextInt(100);
-			int dislikeCount = random.nextInt(100);
+			int likeCount = random.nextInt(50);
+			int dislikeCount = random.nextInt(50);
 			write(i % 2 + 1, memberId, title, body, hitCount, likeCount, dislikeCount);
 		}
 	}

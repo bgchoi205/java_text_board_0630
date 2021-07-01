@@ -27,4 +27,8 @@ public class LikeRepository {
 		likes.add(newLike);
 	}
 
+	public void removeLike(Like like) {
+		likes.remove(like);
+	}
+
 }

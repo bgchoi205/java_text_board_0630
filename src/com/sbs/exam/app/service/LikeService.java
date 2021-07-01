@@ -20,4 +20,8 @@ public class LikeService {
 		likeRepository.addLike(relTypeCode, relId, loginedMemberId, isLike, isDislike);
 	}
 
+	public void removeLike(Like like) {
+		likeRepository.removeLike(like);
+	}
+
 }
