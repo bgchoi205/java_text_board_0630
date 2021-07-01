@@ -120,6 +120,8 @@ public class UsrArticleController extends Controller {
 		System.out.printf("제목 : %s\n", article.getTitle());
 		System.out.printf("내용 : %s\n", article.getBody());
 		System.out.printf("조회수 : %d\n", article.getHitCount());
+		System.out.printf("좋아요 : %d\n", article.getLikeCount());
+		System.out.printf("싫어요 : %d\n", article.getDislikeCount());
 		article.setHitCount(article.getHitCount() + 1);
 	}
 
@@ -140,9 +142,10 @@ public class UsrArticleController extends Controller {
 				return;
 			}
 		}
-		
+		// 게시판 선택, 검색어, 제목 or 내용에서 검색 1차필터
 		articles = articleService.getFilteredArticles(boardId, searchKeyword, searchKeywordTypeCode);
 		
+		// 1차필터를 다시 id, title, hitCount, likeCount, dislikeCount 오름차순/내림차순 정렬
 		articles = articleService.getOrderedArticles(articles, orderByColumn, orderAscTypeCode);
 		
 		int pageCount = 10;
@@ -152,7 +155,8 @@ public class UsrArticleController extends Controller {
 			endIndex = 0;
 		}
 		
-		System.out.println("해당 게시물 수:" + articles.size());
+		System.out.println("===해당 게시물 수:" + articles.size() + "===");
+		System.out.println("===페이지:" + page + "===");
 		System.out.printf("번호 / 게시판 / 작성자 / 작성날짜 / 제목 / 조회 / 좋아요 / 싫어요\n");
 
 		for (int i = startIndex; i >= endIndex; i--) {

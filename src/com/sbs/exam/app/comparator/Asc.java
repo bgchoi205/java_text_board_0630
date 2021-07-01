@@ -9,6 +9,7 @@ import lombok.Data;
 @Data
 public class Asc implements Comparator<Article>{
 	String columnType;
+	
 	public Asc(String getColumnType) {
 		columnType = getColumnType;
 	}

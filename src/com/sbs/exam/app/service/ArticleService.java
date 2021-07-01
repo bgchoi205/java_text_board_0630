@@ -34,12 +34,13 @@ public class ArticleService {
 	public void makeTestData() {
 		Random random = new Random();
 		for (int i = 0; i < 100; i++) {
-			String title = "제목 " + (i + 1);
-			String body = "내용 " + (i + 1);
+			int memberId = random.nextInt(100);
+			String title = "제목" + (i + 1);
+			String body = "내용" + (i + 1);
 			int hitCount = random.nextInt(100);
 			int likeCount = random.nextInt(100);
 			int dislikeCount = random.nextInt(100);
-			write(i % 2 + 1, i % 2 + 1,title, body, hitCount, likeCount, dislikeCount);
+			write(i % 2 + 1, memberId, title, body, hitCount, likeCount, dislikeCount);
 		}
 	}
 

@@ -92,6 +92,8 @@ public class App {
 				return Container.getUsrArticleController();
 			case "member":
 				return Container.getUsrMemberController();
+			case "like":
+				return Container.getUsrLikeController();
 			case "system":
 				return Container.getUsrSystemController();
 			
