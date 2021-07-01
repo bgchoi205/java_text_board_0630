@@ -1,9 +1,11 @@
 package com.sbs.exam.app.repository;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import com.sbs.exam.app.Rq;
+import com.sbs.exam.app.comparator.Asc;
 import com.sbs.exam.app.dto.Article;
 import com.sbs.exam.app.dto.Member;
 import com.sbs.exam.util.Util;
@@ -54,13 +56,13 @@ public class ArticleRepository {
 		return articles;
 	}
 
-	public List<Article> getFilteredArticles(int boardId, String searchKeyword, String searchKeywordTypeCode, String orderByColumn, String orderAscTypeCode) {
-		List<Article> FilteredArticles = getFiltered1Articles(boardId, searchKeyword, searchKeywordTypeCode, orderByColumn, orderAscTypeCode);
+	public List<Article> getFilteredArticles(int boardId, String searchKeyword, String searchKeywordTypeCode) {
+		List<Article> FilteredArticles = getFiltered1Articles(boardId, searchKeyword, searchKeywordTypeCode);
 		
 		return FilteredArticles;
 	}
 
-	private List<Article> getFiltered1Articles(int boardId, String searchKeyword, String searchKeywordTypeCode, String orderByColumn, String orderAscTypeCode) {
+	private List<Article> getFiltered1Articles(int boardId, String searchKeyword, String searchKeywordTypeCode) {
 		List<Article> Filtered1Articles = new ArrayList<>();
 		if(boardId == 0) {
 			Filtered1Articles =  articles;
@@ -71,12 +73,12 @@ public class ArticleRepository {
 				}
 			}
 		}
-		Filtered1Articles = getFiltered2Articles(Filtered1Articles, searchKeyword, searchKeywordTypeCode, orderByColumn, orderAscTypeCode);
+		Filtered1Articles = getFiltered2Articles(Filtered1Articles, searchKeyword, searchKeywordTypeCode);
 		
 		return Filtered1Articles;
 	}
 
-	private List<Article> getFiltered2Articles(List<Article> filtered1Articles, String searchKeyword, String searchKeywordTypeCode, String orderByColumn, String orderAscTypeCode) {
+	private List<Article> getFiltered2Articles(List<Article> filtered1Articles, String searchKeyword, String searchKeywordTypeCode) {
 		List<Article> Filtered2Articles = new ArrayList<>();
 		if(searchKeyword.isEmpty()) {
 			Filtered2Articles =  filtered1Articles;
@@ -98,6 +100,16 @@ public class ArticleRepository {
 //		Filtered2Articles = getFiltered3Articles(Filtered2Articles, orderByColumn, orderAscTypeCode);
 		
 		return Filtered2Articles;
+	}
+
+	
+	public List<Article> getOrderedArticles(List<Article> articles2, String orderByColumn, String orderAscTypeCode) {
+		if(orderAscTypeCode.equals("desc")) {
+			Collections.sort(articles2, new Asc(orderByColumn));
+		}else if(orderAscTypeCode.equals("asc")) {
+			Collections.sort(articles2, new Asc(orderByColumn).reversed());
+		}
+		return articles2;
 	}
 
 

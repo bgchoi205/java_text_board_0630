@@ -43,7 +43,11 @@ public class ArticleService {
 		}
 	}
 
-	public List<Article> getFilteredArticles(int boardId, String searchKeyword, String searchKeywordTypeCode, String orderByColumn, String orderAscTypeCode) {
-		return articleRepository.getFilteredArticles(boardId, searchKeyword, searchKeywordTypeCode, orderByColumn, orderAscTypeCode);
+	public List<Article> getFilteredArticles(int boardId, String searchKeyword, String searchKeywordTypeCode) {
+		return articleRepository.getFilteredArticles(boardId, searchKeyword, searchKeywordTypeCode);
+	}
+
+	public List<Article> getOrderedArticles(List<Article> articles, String orderByColumn, String orderAscTypeCode) {
+		return articleRepository.getOrderedArticles(articles, orderByColumn, orderAscTypeCode);
 	}
 }

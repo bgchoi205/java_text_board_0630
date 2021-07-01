@@ -141,14 +141,9 @@ public class UsrArticleController extends Controller {
 			}
 		}
 		
-		articles = articleService.getFilteredArticles(boardId, searchKeyword, searchKeywordTypeCode, orderByColumn, orderAscTypeCode);
+		articles = articleService.getFilteredArticles(boardId, searchKeyword, searchKeywordTypeCode);
 		
-		
-		if(orderAscTypeCode.equals("desc")) {
-			Collections.sort(articles, new Asc(orderByColumn));
-		}else if(orderAscTypeCode.equals("asc")) {
-			Collections.sort(articles, new Asc(orderByColumn).reversed());
-		}
+		articles = articleService.getOrderedArticles(articles, orderByColumn, orderAscTypeCode);
 		
 		int pageCount = 10;
 		int startIndex = articles.size() - 1 - ((page - 1) * pageCount);
